@@ -1,4 +1,6 @@
 using _3_ASP_NET_CORE_BASIC;
+using _3_ASP_NET_CORE_BASIC.Filters;
+using _3_ASP_NET_CORE_BASIC.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -18,6 +20,29 @@ builder.Services.Configure<MvcOptions>(options =>
 });
 builder.Services.AddMemoryCache();
 var app = builder.Build();
+
+app.Map("/test", async appBuilder =>
+{
+    // appBuilder.Use(async (context, next) =>
+    // {
+    //     // context.Response.ContentType = "text/html";
+    //     await context.Response.WriteAsync("1+");
+    //     await next();
+    //     await context.Response.WriteAsync("1-");
+    // });
+    // appBuilder.Use(async (context, next) =>
+    // {
+    //     await context.Response.WriteAsync("2+");
+    //     await next();
+    //     await context.Response.WriteAsync("2-");
+    // });
+    appBuilder.UseMiddleware<MD2>();
+    appBuilder.UseMiddleware<MD1>();
+    appBuilder.Run(async ctx =>
+    {
+        await ctx.Response.WriteAsync("[]");
+    });
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

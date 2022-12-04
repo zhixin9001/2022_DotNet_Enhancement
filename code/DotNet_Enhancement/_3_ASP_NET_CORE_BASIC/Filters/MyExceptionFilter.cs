@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace _3_ASP_NET_CORE_BASIC;
+namespace _3_ASP_NET_CORE_BASIC.Filters;
 
 public class MyExceptionFilter: IAsyncExceptionFilter
 {
