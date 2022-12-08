@@ -16,27 +16,28 @@ public class WeatherForecastController : ControllerBase
     private readonly RoleManager<Role> _roleManager;
     private readonly UserManager<User> _userManager;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, RoleManager<Role> roleManager, UserManager<User> userManager)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, RoleManager<Role> roleManager,
+        UserManager<User> userManager)
     {
         _logger = logger;
         _roleManager = roleManager;
         _userManager = userManager;
     }
+    //
+    // [HttpGet(Name = "GetWeatherForecast")]
+    // public IEnumerable<WeatherForecast> Get()
+    // {
+    //     return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+    //         {
+    //             Date = DateTime.Now.AddDays(index),
+    //             TemperatureC = Random.Shared.Next(-20, 55),
+    //             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+    //         })
+    //         .ToArray();
+    // }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
-    {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-    }    
-    
-    [HttpGet(Name = "auth")]
-    public async Task<IActionResult> Auth()
+    [HttpGet("init")]
+    public async Task<IActionResult> Init()
     {
         var roleExists = await _roleManager.RoleExistsAsync("admin");
         if (!roleExists)
@@ -50,10 +51,10 @@ public class WeatherForecastController : ControllerBase
         }
 
         var user = await _userManager.FindByNameAsync("zx");
-        if (user==null)
+        if (user == null)
         {
-            user = new User() {UserName = "zx", Email = "zhixin9001@126.com", EmailConfirmed = false};
-            var result = await _userManager.CreateAsync(user);
+            user = new User() {UserName = "zx", Email = "zhixin9001@126.com", EmailConfirmed = true};
+            var result = await _userManager.CreateAsync(user, "123456");
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
@@ -68,4 +69,62 @@ public class WeatherForecastController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpGet("login/{user}/{pwd}")]
+    public async Task<IActionResult> Login([FromRoute] string user, [FromRoute] string pwd)
+    {
+        var dbUser = await _userManager.FindByNameAsync(user);
+        if (dbUser == null)
+        {
+            return NotFound();
+        }
+    
+        if (await _userManager.IsLockedOutAsync(dbUser))
+        {
+            return BadRequest("Locked");
+        }
+    
+        var isLoginSucceed = await _userManager.CheckPasswordAsync(dbUser, pwd);
+        if (isLoginSucceed)
+        {
+            return Ok("Login succeed");
+        }
+        else
+        {
+            await _userManager.AccessFailedAsync(dbUser);
+            return BadRequest("Login failed");
+        }
+    }
+
+     [HttpGet("reset")]
+     public async Task<IActionResult> ResetPwd(string email)
+     {
+         var user = await _userManager.FindByEmailAsync(email);
+         if (user == null)
+         {
+             return NotFound();
+         }
+
+         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+         _logger.LogInformation($"token is {token}");
+         return Ok($"{token}");
+     }
+
+     [HttpGet("verify-reset/{email}/{pwd}/{token}")]
+     public async Task<IActionResult> VerifyReset([FromRoute] string email, [FromRoute] string pwd,
+         [FromRoute] string token)
+     {
+         var user = await _userManager.FindByEmailAsync(email);
+         if (user == null)
+         {
+             return NotFound();
+         }
+
+         var result = await _userManager.ResetPasswordAsync(user, token, pwd);
+         if (result.Succeeded)
+         {
+             return Ok();
+         }
+         return BadRequest();
+     }
 }
