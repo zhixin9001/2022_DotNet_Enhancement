@@ -11,3 +11,6 @@ dotnet ef database update
 use efcore;
 show databases;
 show tables;
+
+
+AQAAAAEAACcQAAAAEOEOAovfGtYJa3nJcnlAfQMNZkBpULqcH3w8rSiEL+Su+od0qZMnc28466l2u9ejtQ==
