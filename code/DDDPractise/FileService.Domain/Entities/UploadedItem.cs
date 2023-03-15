@@ -1,6 +1,8 @@
-﻿namespace FileService.Domain.Entities;
+﻿using DomainCommons.Models;
 
-public class UploadedItem
+namespace FileService.Domain.Entities;
+
+public record UploadedItem : BaseEntity
 {
     public DateTime CreationTime { get; private set; }
     public long FileSizeInBytes { get; private set; }

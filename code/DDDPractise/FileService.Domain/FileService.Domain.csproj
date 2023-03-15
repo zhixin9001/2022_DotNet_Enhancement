@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Commons\Domain.Commons.csproj" />
+    <ProjectReference Include="..\Zhixin.Commons\Zhixin.Commons.csproj" />
+  </ItemGroup>
+
 </Project>
