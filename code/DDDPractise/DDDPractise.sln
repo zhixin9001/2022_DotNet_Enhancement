@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{D423F6EE-8249-4994-8B95-153E8C53B71A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileService", "FileService", "{EDB74CB7-EE6D-4DE3-BAA4-B967DFED294E}"
@@ -17,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.WebAPI", "FileService.WebAPI\FileService.WebAPI.csproj", "{B4152BFA-3517-4B8C-80E7-AF622F2ABED7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhiXin.ASPNETCore", "ZhiXin.ASPNETCore\ZhiXin.ASPNETCore.csproj", "{580487C3-D32A-4F00-8311-8199090D6629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonInitializer", "CommonInitializer\CommonInitializer.csproj", "{CAE8A923-9233-40DD-AE25-A591A65EF732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +55,10 @@ Global
 		{580487C3-D32A-4F00-8311-8199090D6629}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{580487C3-D32A-4F00-8311-8199090D6629}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{580487C3-D32A-4F00-8311-8199090D6629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE8A923-9233-40DD-AE25-A591A65EF732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE8A923-9233-40DD-AE25-A591A65EF732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE8A923-9233-40DD-AE25-A591A65EF732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE8A923-9233-40DD-AE25-A591A65EF732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8713E609-E340-4BE3-8188-F38F0C9EC2C6} = {EDB74CB7-EE6D-4DE3-BAA4-B967DFED294E}
