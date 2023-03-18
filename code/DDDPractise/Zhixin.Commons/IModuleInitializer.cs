@@ -1,6 +1,8 @@
-﻿namespace Zhixin.Commons;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-public class IModuleInitializer
+namespace Zhixin.Commons;
+
+public interface IModuleInitializer
 {
-    
+    public void Initialize(IServiceCollection services);
 }

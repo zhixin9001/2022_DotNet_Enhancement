@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DomainCommons.Models;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ZhiXin.Infrastructure.EFCore;
@@ -17,7 +18,7 @@ public abstract class BaseDbContext : DbContext
         throw new NotImplementedException("Don't call non async functions");
     }
 
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    public async override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
     {
         // Dispatch Domain Events collection. 
         // Choices:
