@@ -1,15 +1,13 @@
 ﻿using FileService.Domain.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZhiXin.Infrastructure.EFCore;
 
 namespace FileService.Infrastructure;
 
-public class FSDbContext : BaseDbContext
+public class FSDbContext : DbContext
 {
-    public DbSet<UploadedItem> UploadedItems { get; private set; }
+    public DbSet<UploadedItem> UploadedItems { get; set; }
 
-    public FSDbContext(DbContextOptions options, IMediator? mediator) : base(options, mediator)
+    public FSDbContext(DbContextOptions<FSDbContext> options) : base(options)
     {
     }
 
