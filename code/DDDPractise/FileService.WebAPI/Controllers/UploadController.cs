@@ -30,7 +30,6 @@ public class UploadController : ControllerBase
         var fileName = file.FileName;
         using var stream = file.OpenReadStream();
         var uploadedItem = await _domainService.UploadAsync(stream, fileName, token);
-        await _fsRepository.AddFile(uploadedItem);
         return uploadedItem.RemoteUrl;
     }
 }

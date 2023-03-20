@@ -9,8 +9,8 @@ public class FSDomainService
     private readonly IStorageClient backupStorage; //备份服务器
     private readonly IStorageClient remoteStorage; //文件存储服务器
 
-    public FSDomainService(IFSRepository repository,
-        IEnumerable<IStorageClient> storageClients)
+    public FSDomainService(IFSRepository repository
+        , IEnumerable<IStorageClient> storageClients)
     {
         this.repository = repository;
         this.backupStorage = storageClients.First(a => a.StorageType == StorageType.Backup);
@@ -36,6 +36,9 @@ public class FSDomainService
         stream.Position = 0;
         var remoteUrl = await remoteStorage.SaveAsync(key, stream, cancellationToken);
 
-        return UploadedItem.Create(Guid.NewGuid(), fileSize, fileName, hash, backupUrl, remoteUrl);
+        var uploadedItem = UploadedItem.Create(Guid.NewGuid(), fileSize, fileName, hash, backupUrl,
+            backupUrl);
+        await repository.AddFile(uploadedItem);
+        return uploadedItem;
     }
 }

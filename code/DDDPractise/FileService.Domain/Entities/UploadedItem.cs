@@ -20,7 +20,8 @@ public record UploadedItem : BaseEntity
             FileName = fileName,
             FileSHA256Hash = fileSHA256Hash,
             BackupUrl = backupUrl,
-            RemoteUrl = remoteUrl
+            RemoteUrl = remoteUrl,
+            CreationTime = DateTime.Now,
         };
     }
 }
