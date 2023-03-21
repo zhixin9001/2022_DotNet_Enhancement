@@ -1,4 +1,4 @@
-﻿namespace IdDomainService.Infrastructure.Options;
+﻿namespace IdentityService.Infrastructure.Options;
 
 public class SmsSenderSettings
 {

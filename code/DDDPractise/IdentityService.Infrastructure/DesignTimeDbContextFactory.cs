@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 
-namespace IdDomainService.Infrastructure;
+namespace IdentityService.Infrastructure;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<IdDbContext>
 {

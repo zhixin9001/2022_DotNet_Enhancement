@@ -1,4 +1,4 @@
-﻿namespace IdDomainService.Infrastructure.DbConfigs;
+﻿namespace IdentityService.Infrastructure.DbConfigs;
 
 public class UserConfig : IEntityTypeConfiguration<User>
 {

@@ -1,7 +1,7 @@
 ﻿using IdentityService.Domain;
 using Microsoft.Extensions.Logging;
 
-namespace IdDomainService.Infrastructure;
+namespace IdentityService.Infrastructure;
 
 public class MockSmsSender : ISmsSender
 {

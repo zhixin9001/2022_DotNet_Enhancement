@@ -1,4 +1,4 @@
-﻿namespace IdDomainService.Infrastructure;
+﻿namespace IdentityService.Infrastructure;
 
 public class IdDbContext : IdentityDbContext<User, Role, Guid>
 {
