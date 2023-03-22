@@ -1,9 +1,4 @@
-﻿using System.Diagnostics;
-using System.Net;
-using IdentityService.Domain;
-using IdentityService.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
 
 namespace IdentitiyService.WebAPI.Controllers.Login;
 
@@ -59,8 +54,20 @@ public class LoginController : ControllerBase
             return BadRequest("Login failed:" + msg);
         }
     }
-    
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult> ChangePassword(ChangePasswordRequest req)
+    {
+        var userId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var result = await _repository.ChangePasswordAsync(userId, req.Password);
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(result.Errors.SumErrors());
+        }
+    }
 }
