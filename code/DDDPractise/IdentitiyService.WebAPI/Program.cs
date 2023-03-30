@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using ZhiXin.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureServices((ctx, services) => services.AddSingleton<MyImplementation>());
 
 builder.Services.AddDbContext<IdDbContext>(opt =>
 {
@@ -29,12 +30,12 @@ IdentityBuilder identityBuilder = builder.Services.AddIdentityCore<User>(options
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
 });
 identityBuilder = new IdentityBuilder(identityBuilder.UserType, typeof(Role), builder.Services);
-identityBuilder.AddEntityFrameworkStores<IdDbContext>().AddDefaultTokenProviders()
+identityBuilder.AddEntityFrameworkStores<IdDbContext>().AddDefaultTokenProviders() // TODO: AddEntityFrameworkStores
     .AddRoleManager<RoleManager<Role>>()
     .AddUserManager<IdUserManager>();
 
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(); // AddAuthorization AddAuthentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
 {
     var jwtOption = builder.Configuration.GetSection("JWT").Get<JWTOptions>();
@@ -50,6 +51,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = secKey,
     };
 });
+
+builder.Services.AddFluentValidation(fv => { fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()); });
+
+// Add services to the container.
+builder.Services.AddScoped<ISmsSender, MockSmsSender>();
+builder.Services.AddScoped<IIdRepository, IdRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IdDomainService>();
+builder.Services.AddDataProtection(); // TODO: AddDataProtection
+builder.Services.AddControllers();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(new[] {typeof(Program).Assembly}));
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.Configure<SwaggerGenOptions>(c =>
 {
     c.AddSecurityDefinition("Authorization", new OpenApiSecurityScheme
@@ -79,20 +94,6 @@ builder.Services.Configure<SwaggerGenOptions>(c =>
         }
     });
 });
-
-builder.Services.AddFluentValidation(fv => { fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()); });
-
-// Add services to the container.
-builder.Services.AddScoped<ISmsSender, MockSmsSender>();
-builder.Services.AddScoped<IIdRepository, IdRepository>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IdDomainService>();
-builder.Services.AddDataProtection();
-builder.Services.AddControllers();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(new[] {typeof(Program).Assembly}));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

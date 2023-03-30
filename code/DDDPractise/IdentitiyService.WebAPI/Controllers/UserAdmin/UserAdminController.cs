@@ -25,6 +25,13 @@ public class UserAdminController : ControllerBase
         return _userManager.Users.Select(u => UserDTO.Create(u)).ToArrayAsync();
     }
 
+    [HttpGet]
+    public async Task<UserDTO> FindById(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        return UserDTO.Create(user);
+    }
+
     [HttpPost]
     public async Task<ActionResult> AddAdminUser(AddAdminUserRequest req)
     {
@@ -35,6 +42,13 @@ public class UserAdminController : ControllerBase
         }
 
         await _mediator.Send(new UserCreatedEvent(user.Id, user.UserName, password, user.PhoneNumber));
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> DeleteAdminUser(Guid id)
+    {
+        await _repository.RemoveUserAsync(id);
         return Ok();
     }
 }

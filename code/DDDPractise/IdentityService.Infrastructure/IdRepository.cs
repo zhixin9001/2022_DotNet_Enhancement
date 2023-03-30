@@ -153,7 +153,7 @@ public class IdRepository : IIdRepository
 
     public async Task<IdentityResult> RemoveUserAsync(Guid id)
     {
-        var user = await FindByIdAsync(id);
+        var user = await FindByIdAsync(id); // TODO: UserLoginStore
         var userLoginStore = _userManager.UserLoginStore;
         var noneCT = default(CancellationToken);
         //一定要删除aspnetuserlogins表中的数据，否则再次用这个外部登录登录的话
